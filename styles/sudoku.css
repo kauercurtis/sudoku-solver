@@ -1,0 +1,23 @@
+body{
+    display: flex; justify-content: center;
+}
+
+main{
+    height: 800px; width: 800px; background-color: grey; display: flex; flex-direction: column;
+}
+
+#top{
+    height: 400px; width: 800px; display: flex;
+}
+
+#top #sudoku_table{
+    height: 400px; width: 500px; background-color: red; display: block;
+}
+
+#top #numpad{
+    height: 400px; width: 300px; background-color: blue; display: block;
+}
+
+#text{
+    height: 400px; width: 800px; background-color: yellow; display: block;
+}
