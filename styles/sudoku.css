@@ -15,9 +15,29 @@ main{
 }
 
 #top #numpad{
-    height: 400px; width: 300px; background-color: blue; display: block;
+    height: 400px; width: 300px; background-color: transparent; display: block;
 }
 
 #text{
     height: 400px; width: 800px; background-color: yellow; display: block;
+}
+
+/*sudoku_table*/
+
+#sudoku_table table{
+    height: 100%; width: 100%; background-color: orange;
+}
+
+#sudoku_table table tr td{
+    height: 33%; width: 33%; border: 4px solid black;
+}
+
+/*numpad*/
+
+#numpad table{
+    height: 100%; width: 100%; background-color: green;
+}
+
+#numpad table tr td{
+    height: 25%; width: 33%; border: 2px solid black;
 }
