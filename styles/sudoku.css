@@ -25,11 +25,19 @@ main{
 /*sudoku_table*/
 
 #sudoku_table table{
-    height: 100%; width: 100%; background-color: orange;
+    height: 100%; width: 100%; background-color: black;
 }
 
 #sudoku_table table tr td{
-    height: 33%; width: 33%; border: 4px solid black;
+    height: 33%; width: 33%; border: 1px solid black;
+}
+
+.quartile{
+    height: 100%; width: 100%; border: 0px;
+}
+
+.quartile td{
+    height: 33%; width: 33%; border: 0px solid black; background-color: white;
 }
 
 /*numpad*/
