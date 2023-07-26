@@ -49,3 +49,7 @@ main{
 #numpad table tr td{
     height: 25%; width: 33%; border: 2px solid black;
 }
+
+button{
+    height: 100%; width: 100%;
+}
