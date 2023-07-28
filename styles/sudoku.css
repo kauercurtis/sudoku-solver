@@ -40,6 +40,10 @@ main{
     height: 33%; width: 33%; border: 0px solid black; background-color: white;
 }
 
+input{
+    height: 100%; width: 100%;
+}
+
 /*numpad*/
 
 #numpad table{
