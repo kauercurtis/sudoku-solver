@@ -1,0 +1,51 @@
+body{
+    display: flex; justify-content: center;
+}
+
+main{
+    height: 800px; width: 800px; background-color: grey; display: flex; flex-direction: column;
+}
+
+#top{
+    height: 400px; width: 800px; display: flex;
+}
+
+#top #sudoku_table{
+    height: 400px; width: 500px; background-color: red; display: block;
+}
+
+#top #numpad{
+    height: 400px; width: 300px; background-color: transparent; display: block;
+}
+
+#text{
+    height: 400px; width: 800px; background-color: yellow; display: block;
+}
+
+/*sudoku_table*/
+
+#sudoku_table table{
+    height: 100%; width: 100%; background-color: black;
+}
+
+#sudoku_table table tr td{
+    height: 33%; width: 33%; border: 1px solid black;
+}
+
+.quartile{
+    height: 100%; width: 100%; border: 0px;
+}
+
+.quartile td{
+    height: 33%; width: 33%; border: 0px solid black; background-color: white;
+}
+
+/*numpad*/
+
+#numpad table{
+    height: 100%; width: 100%; background-color: green;
+}
+
+#numpad table tr td{
+    height: 25%; width: 33%; border: 2px solid black;
+}
