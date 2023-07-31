@@ -19,7 +19,7 @@ function initializeScewedTree(){
             scewedTree[counter] = 0;
         }
         else{
-            scewedTree[counter] = currentSquare.value; 
+            scewedTree[counter] = Number(currentSquare.value) + 10; 
         }
     }
     
