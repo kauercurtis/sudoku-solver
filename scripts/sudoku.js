@@ -175,6 +175,22 @@ function findContradiction(index, sudoku, value){
     }
 }
 
+//looks at a value at the index
+//if the value is 9, resets value to 0 and returns false
+//else returns true
+function peekValue(index, sudoku){
+    if(sudoku[index] > 9){
+        return false;
+    }
+    else if(sudoku[index] === 9){
+        sudoku[index] = 0;
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
 //traverses an skewed tree array representation of a sudoku
 //returns the next index that does not have a constant
 //index = index to traverse from
@@ -189,7 +205,7 @@ function traverseDown(index, sudoku){
 function backTrack(index, sudoku){
     do{
         index--;
-    }while(sudoku[index] > 9 && index >= 1);
+    }while(sudoku[index] > 9 && index >= 1 && !peekValue(index, sudoku));
     return index;
 }
 
@@ -199,12 +215,10 @@ function traversalDirector(index, sudoku, value){
     }
 
     while(value < 10){
-        console.log(findContradiction(index, sudoku, value));
         if(findContradiction(index, sudoku, value) === true){
             ++value;
         }
         else{
-           // console.log(value);
             sudoku[index] = value;
             break;
         }
@@ -226,5 +240,15 @@ function solve(sudoku){
     //console.log("startingIndex = " + startingIndex);
     traversalDirector(startingIndex, sudoku, 1);
     outputSudokuConsole(sudoku);
+    outputUI(sudoku);
 }
 
+function outputUI(sudoku){
+    let currentSquare;
+    let counter = 1;
+    while(counter <= 81){
+        currentSquare = document.getElementById("square" + counter);
+        currentSquare.value = convertConstant(sudoku[counter]);
+        counter++;
+    }
+}
