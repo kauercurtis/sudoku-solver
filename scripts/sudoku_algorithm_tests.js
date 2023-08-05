@@ -22,9 +22,11 @@ function testGetRow(){
 //looks for a contradiction in the row of the index
 function checkRowContradiction(index, sudoku, value){
     let row = getRow(index);
+    console.log(1 + (9 * (row - 1)));
     let startingIndex = 1 + (9 * (row - 1));
     let counter = 1;
-    while(counter <= 9 && (startingIndex % 9 != 0)){
+    while(counter <= 9  /*(startingIndex % 9 != 0)*/){
+        console.log(counter);
         if(convertConstant(sudoku[startingIndex]) === value){
             return true;
         }
@@ -75,6 +77,19 @@ function testCheckRowContradiction(){
     console.log(checkRowContradiction(33, testSudoku, 6));
     console.log("checkRowContradiction(36, testSudoku, 1) === true");
     console.log(checkRowContradiction(36, testSudoku, 1));
+
+    testSudoku[1] = 0;
+    testSudoku[2] = 0;
+    testSudoku[3] = 8;
+    testSudoku[4] = 0;
+    testSudoku[5] = 0;
+    testSudoku[6] = 0;
+    testSudoku[7] = 0
+    testSudoku[8] = 3;
+    testSudoku[9] = 1;
+
+    console.log("checkRowContradiction(1, testSudoku, 1) === true");
+    console.log(checkRowContradiction(1, testSudoku, 1));
 }
 
 //finds the column that contains the index
@@ -117,10 +132,10 @@ function checkColumnContradiction(index, sudoku, value){
 function testCheckColumnContradiction(){
     let testSudoku = [82];
     testSudoku[2] = 0;
-    testSudoku[11] = 0;
+    testSudoku[11] = 4;
     testSudoku[20] = 0;
     testSudoku[29] = 12;
-    testSudoku[38] = 19;
+    testSudoku[38] = 5;
     testSudoku[47] = 0;
     testSudoku[56] = 4;
     testSudoku[65] = 5;
@@ -130,6 +145,8 @@ function testCheckColumnContradiction(){
     console.log(checkColumnContradiction(47, testSudoku, 6)); //false
     console.log("checkColumnContradiction(11, testSudoku, 9) === true");
     console.log(checkColumnContradiction(11, testSudoku, 9)); //true
+    console.log("checkColumnContradiction(2, testSudoku, 4) === true");
+    console.log(checkColumnContradiction(2, testSudoku, 4));
 
     testSudoku[7] = 11
     testSudoku[16] = 0
@@ -413,4 +430,4 @@ function traversalDirector(index, sudoku, value){
 }
 
 //-------------------------------------------------------------------------
-window.addEventListener(onload, testBackTrack());
+window.addEventListener(onload, testCheckColumnContradiction());
