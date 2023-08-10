@@ -1,12 +1,79 @@
+var current = 0;
+
 window.addEventListener("load", () => {
+/*--------------------------Square Initialization--------------------------*/    
+    const quartiles = document.getElementsByClassName("quartile");
+
+    let quartile_counter = 0;
+    let value_counter = 0;
+    let current_Value = 0; 
+    
+    while(quartile_counter < 9){
+        let squaresInQuartile = quartiles[quartile_counter].getElementsByTagName("td");
+        while(value_counter < 9){
+            //console.log(squaresInQuartile[value_counter].getAttribute("id"));
+            let currentTD = squaresInQuartile[value_counter];
+            let square = currentTD.getElementsByTagName("input")[0];
+            square.addEventListener("click", () => {
+                current = Number(currentTD.getAttribute("id"));
+                console.log(current);
+            })
+            value_counter++; 
+        }
+        value_counter = 0;
+        quartile_counter++;
+    }
+    
+
+ /*-------------------listen for numpad button clicks-------------------*/   
+    let numPad = document.getElementById("numpad");
+    let numpadRows = numPad.getElementsByTagName("tr");
+    let rowCounter = 0;
+    let buttonCounter = 0;
+ //first implement the number buttons
+    while(rowCounter < 3){
+        let buttonRow = numpadRows[rowCounter].getElementsByTagName("button");
+        while(buttonCounter < 3){
+            console.log(buttonCounter);
+            console.log(buttonRow[buttonCounter].innerHTML);
+            let button = buttonRow[buttonCounter];
+            button.addEventListener("click", () => {
+              let square = document.getElementById(current).getElementsByTagName("input");
+              square[0].value = button.innerHTML;
+              console.log(square[0].value);
+              
+            });
+            buttonCounter++;
+        }
+        buttonCounter = 0;
+        rowCounter++;
+    }
+/*-----------------------Utility Button initialization-----------------------*/
     let submit = document.getElementById("input");
     submit.addEventListener("click", () => {
         console.log("Data being submitted");
-        var sudoku = [82];
+        let sudoku = [82];
         initializeSudoku(sudoku);
         solve(sudoku);
     });
+
+    let clear = document.getElementById("clear");
+    clear.addEventListener("click", () => {
+    console.log("clearing all inputted values");
+    current = 0;
+    let counter = 1;
+    let squareValueId;
+    let currentSquare;
+
+    for(let counter = 1; counter <= 81; counter++){
+        squareValueId = "square" + counter;
+        currentSquare = document.getElementById(squareValueId);
+        currentSquare.value = "";
+    }
+    });
 });
+
+
 
 function initializeSudoku(sudoku){
     let squareValueId;
