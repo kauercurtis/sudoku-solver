@@ -1,0 +1,79 @@
+/*-----------------mobile-------------------*/
+body{
+    height: 100vh; width: 100vw;
+    background-color: #fffafa; display: flex; justify-content: center;
+}
+
+main{
+    min-height: 400px; min-width: 250px;  height: 87%; width: 83%; align-self: center; background-color: grey;
+}
+
+#top{
+    min-height: 295px; min-width: 250px; height: 73vh; width: 100%; background-color: yellow;
+}
+
+/*---sudoku table---*/
+
+#top #sudoku_table{
+    min-height: 240px; min-width: 240px; height: 90%; width: 100%; max-height: 300px; background-color: black;
+}
+
+#sudoku_table table{
+    height: 100%; width: 100%; border-right: 2px solid black; border-left: 1px solid black;
+}
+
+table tr{
+    min-height: 76px; height: 31%;
+}
+
+table tr:last-child{
+    border-bottom: 0px;
+}
+
+tr td{
+    min-width: 76px; width: 31%; padding: 0px;
+}
+
+.quartile{
+    height: 100%; width: 100%;
+}
+
+.quartile tr{
+    min-height: 23px; height: 30%;
+}
+
+.quartile td{
+    min-width: 23px; width: 30%; background-color: #fffafa;
+}
+
+input{
+    height: 90%; width: 90%; border: 1px solid black
+}
+
+/*numpad*/
+
+#numpad{
+    min-height: 55px; height: 10%; width: 100%; background-color: pink;
+    display: flex; justify-content: center;
+}
+
+#numpad table{
+    min-height: 55px; width: 100%;
+}
+
+#utility td{
+    text-align: center;
+}
+
+#numpad table tr:first-child, #numpad table tr:nth-child(2),
+#numpad table tr:nth-child(3), #extra_space
+{
+    display: none;
+}
+
+#text{
+    min-height: 105px; min-width: 250px; height: 30%; width: 100%; background-color: blue;
+}
+
+
+

@@ -9,3 +9,9 @@ To Do:
 - index.html - Add rest of keypad buttons and add descriptive text to div id="text".
 - styles/sudoku.css - Create a permanent style to the webpage and improve responsiveness to different screens/devices (mobile and tablets).
 - scripts/sudoku.js - Provide functionality to the remaining buttons in the keypad corresponding to their ids and refactor algorithm.
+
+-8/16/2023
+Added and implemented rest of keypad buttons with Functionality.
+
+To Do:
+- index.html - add descriptive text to div id="text".
