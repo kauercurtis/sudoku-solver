@@ -11,12 +11,10 @@ window.addEventListener("load", () => {
     while(quartile_counter < 9){
         let squaresInQuartile = quartiles[quartile_counter].getElementsByTagName("td");
         while(value_counter < 9){
-            //console.log(squaresInQuartile[value_counter].getAttribute("id"));
             let currentTD = squaresInQuartile[value_counter];
             let square = currentTD.getElementsByTagName("input")[0];
             square.addEventListener("click", () => {
                 current = Number(currentTD.getAttribute("id"));
-                console.log(current);
             })
             value_counter++; 
         }
@@ -40,8 +38,6 @@ window.addEventListener("load", () => {
             button.addEventListener("click", () => {
               let square = document.getElementById(current).getElementsByTagName("input");
               square[0].value = button.innerHTML;
-              console.log(square[0].value);
-              
             });
             buttonCounter++;
         }
@@ -89,8 +85,6 @@ function initializeSudoku(sudoku){
             sudoku[counter] = Number(currentSquare.value) + 10; 
         }
     }
-    console.log(sudoku.length);
-    outputSudokuConsole(sudoku);
 }
 
 function outputSudokuConsole(sudoku){
@@ -114,7 +108,7 @@ function checkRowContradiction(index, sudoku, value){
     let startingIndex = 1 + (9 * (row - 1));
     let counter = 1;
     while(counter <= 9){
-        if(convertConstant(sudoku[startingIndex]) == value){
+        if(convertConstantValue(sudoku[startingIndex]) == value){
             return true;
         }
         startingIndex++;
@@ -125,7 +119,7 @@ function checkRowContradiction(index, sudoku, value){
 
 //constant values are represented by double digit teen numbers
 //converts constants to single digit
-function convertConstant(value){
+function convertConstantValue(value){
     if(value <= 9){
         return value;
     }
@@ -151,7 +145,7 @@ function checkColumnContradiction(index, sudoku, value){
     //every column ends with its starting index + 72 because after 72 is the last row    
         let endingIndex = startingIndex + 72;
         while(startingIndex <= endingIndex){
-            if(convertConstant(sudoku[startingIndex]) === value){
+            if(convertConstantValue(sudoku[startingIndex]) === value){
                 return true;
             }
             startingIndex += 9;
@@ -219,7 +213,7 @@ function checkQuartileContradiction(index, sudoku, value){
     let quartile = Array.from(getQuartile(index, sudoku));
     let counter = 0;
     while(counter <= 8){
-        if(convertConstant(quartile[counter]) === value){
+        if(convertConstantValue(quartile[counter]) === value){
             return true;
         }
         counter++;
@@ -314,8 +308,6 @@ function solve(sudoku){
     
     }
 
-//    traversalDirector(startingIndex, sudoku, 1);
-    outputSudokuConsole(sudoku);
     outputUI(sudoku);
 }
 
@@ -324,7 +316,7 @@ function outputUI(sudoku){
     let counter = 1;
     while(counter <= 81){
         currentSquare = document.getElementById("square" + counter);
-        currentSquare.value = convertConstant(sudoku[counter]);
+        currentSquare.value = convertConstantValue(sudoku[counter]);
         counter++;
     }
 }
