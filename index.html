@@ -3,9 +3,13 @@
 <head>
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>Sudoku Solver</title>
-    <!-- <link href="styles/sudoku.css" type="text/css" rel="stylesheet"> -->
-    <link href="styles/sudoku_v2.css" type="text/css" rel="stylesheet">
-    <!-- <script src="scripts/sudoku.js"></script> -->
+    <!--<link href="styles/sudoku.css" type="text/css" rel="stylesheet">-->
+    <!--<link rel="stylesheet" media="screen and (min-width: 1000px)" href="styles/sudoku.css">
+    <link rel="stylesheet" media="screen and (max-width: 999px)" href="styles/sudoku_v2.css">-->
+    <link href="styles/sudoku_structure.css" type="text/css" rel="stylesheet">
+    <link href="styles/sudoku_tables.css" type="text/css" rel="stylesheet">
+    <!--<link href="styles/sudoku_v2.css" type="text/css" rel="stylesheet">-->
+    <script src="scripts/sudoku_v2.js"></script>
     <!-- <script src="scripts/sudoku_algorithm_tests.js"></script> -->
 </head>
 <body>
@@ -50,7 +54,7 @@
                                     <td id="23"><input id="square23" value=""></td>
                                     <td id="24"><input id="square24" value=""></td>
                                 </tr>
-                            </table>                            
+                            </table>                          
                         </td>
                         <td id="quartile3">
                             <table class="quartile">
@@ -128,11 +132,11 @@
                                     <td id="53"><input id="square53" value=""></td>
                                     <td id="54"><input id="square54" value=""></td>
                                 </tr>
-                            </table>                            
+                            </table>                           
                         </td>
                     </tr>
                     <tr>
-                        <td id="quartile7">
+                       <td id="quartile7">
                             <table class="quartile">
                                 <tr id="row7">
                                     <td id="55"><input id="square55" value=""></td>
@@ -152,7 +156,7 @@
                             </table> 
                         </td>
                         <td id="quartile8">
-                            <table class="quartile">
+                           <table class="quartile">
                                 <tr id="row7">
                                     <td id="58"><input id="square58" value=""></td>
                                     <td id="59"><input id="square59" value=""></td>
@@ -168,9 +172,9 @@
                                     <td id="77"><input id="square77" value=""></td>
                                     <td id="78"><input id="square78" value=""></td>
                                 </tr>
-                            </table> 
+                            </table>
                         </td>
-                        <td id="quartile9">
+                       <td id="quartile9">
                             <table class="quartile">
                                 <tr id="row7">
                                     <td id="61"><input id="square61" value=""></td>
@@ -193,7 +197,7 @@
                 </table>
             </div>
             <div id="numpad">
-                <table>
+               <table>
                     <tr id="123">
                         <td id="one">
                             <button id="_1">1</button>
