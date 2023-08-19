@@ -1,4 +1,5 @@
 # sudoku-solver
+
 A web sudoku solver
 
 ________________________________________________________________________________________________________________________________________________________________________________
@@ -15,3 +16,4 @@ Added and implemented rest of keypad buttons with Functionality.
 
 To Do:
 - index.html - add descriptive text to div id="text".
+
