@@ -1,0 +1,73 @@
+/*Mobile*/
+
+#sudoku_table>table{
+    height: 300px; width: 300px; background-color: black;
+}
+
+#sudoku_table>table tr{
+    height: 32%; width: 100%;
+}
+
+#sudoku_table>table tr td{
+    height: 33%; width: 33%; 
+}
+
+.quartile{
+    height: 100%; width: 100%; 
+}
+
+.quartile tr{
+    height: 32%; width: 100%; 
+}
+
+.quartile tr td{
+    height: 33%; width: 33%;
+}
+
+.quartile tr td input{
+    height: 90%; width: 90%; 
+}
+
+#numpad>table {
+    height: 100%; width: 100%; 
+}
+
+#numpad>table tr{
+    height: 25%; width: 100%;
+}
+
+#numpad>table tr td{
+    height: 25%; width: 32%; 
+}
+
+#numpad>table tr td button{
+    height: 100%; width: 100%;     
+}
+
+#numpad>table tr:nth-child(1) td, #numpad>table tr:nth-child(2) td, #numpad>table tr:nth-child(3) td
+{
+    display: none;
+}
+
+/*Tablets*/
+
+@media screen and (min-width: 600px){
+
+    #sudoku_table>table{
+        height: 500px; width: 500px; 
+    }
+}
+
+/*Desktops*/
+
+@media screen and (min-width: 1000px){
+
+    #sudoku_table>table{
+        height: 400px; width: 500px; 
+    }
+
+    #numpad>table tr:nth-child(1) td, #numpad>table tr:nth-child(2) td, #numpad>table tr:nth-child(3) td
+    {
+        display: table-cell;
+    }
+}
