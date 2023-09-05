@@ -8,7 +8,7 @@ Naming Schema - A brief rundown on certain vocabulary used and their meanings:
 
 Row: A row in a sudoku puzzle (there are a total of 9 of these).
 Column: A column in a sudoku puzzle (there are a total of 9 of these).
-Quartile: A 3x3 area in a sudoku puzzle (there are a total of 9 of these).  
+ninetile: A 3x3 area in a sudoku puzzle (there are a total of 9 of these).  
 Contradiction: Something that doesn't follow the rules of a sudoku puzzle.
 constantValue: A given Value from the sudoku puzzle. During algorithmic runtime, represented as constantValue + 10. 
 ________________________________________________________________________________________________________________________________________________________________________________
@@ -26,4 +26,6 @@ Added and implemented rest of keypad buttons with Functionality. Created and app
 To Do:
 - index.html - add descriptive text to div id="text".
 - styles/sudoku.css - add responsive styling to id="text".
-- scripts/sudoku.js - after submit is pressed, disable event listeners and reactivate them when clear is pushed (in that particular instance). Add checks so that no bad input goes through!
+
+-9/5/2023
+Refactored quartile to ninetile. Added appropriate instructions to id="text". Ready for public testing and put on web server.
