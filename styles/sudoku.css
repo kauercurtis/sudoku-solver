@@ -40,19 +40,19 @@ main{
     height: 33%; width: 33%; 
 }
 
-.quartile{
+.ninetile{
     height: 100%; width: 100%; 
 }
 
-.quartile tr{
+.ninetile tr{
     height: 32%; width: 100%; 
 }
 
-.quartile tr td{
+.ninetile tr td{
     height: 33%; width: 33%;
 }
 
-.quartile tr td input{
+.ninetile tr td input{
     height: 90%; width: 90%; 
 }
 
@@ -76,6 +76,20 @@ main{
 {
     display: none;
 }
+
+/*text*/
+#text>h2{
+
+    border-bottom: 2px solid black;
+
+}
+
+#text>p span{
+
+    display: none;
+
+}
+
 
 /*-Tablets-*/
 
@@ -146,5 +160,17 @@ main{
     #numpad>table tr:nth-child(1) td, #numpad>table tr:nth-child(2) td, #numpad>table tr:nth-child(3) td
     {
         display: table-cell;
+    }
+
+    #text>p{
+
+        line-height: 1.8;
+
+    }
+
+    #text>p span{
+
+        display: inline;
+
     }
 }

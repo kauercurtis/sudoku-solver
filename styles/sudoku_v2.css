@@ -1,112 +1,150 @@
-/*-----------------mobile-------------------*/
 body{
-    height: 100vh; width: 100vw;
     background-color: #fffafa; display: flex; justify-content: center;
 }
 
+/*-mobile-*/
+
+/*structure*/ 
+
 main{
-    min-height: 400px; min-width: 250px;  height: 87%; width: 83%; align-self: center; background-color: grey;
+    min-height: 400px; min-width: 300px; margin-top: 100px;
 }
 
 #top{
-    min-height: 295px; min-width: 250px; height: 73vh; width: 100%; background-color: yellow;
+    min-height: 300px; min-width: 300px;
 }
 
-/*---sudoku table---*/
-
-#top #sudoku_table{
-    min-height: 240px; min-width: 240px; height: 90%; width: 100%; max-height: 300px; background-color: black;
+#sudoku_table{
+    min-height: 300px;
 }
-
-#sudoku_table table{
-    height: 100%; width: 100%; border-right: 2px solid black; border-left: 1px solid black;
-}
-
-table tr{
-    min-height: 76px; height: 31%;
-}
-
-table tr:last-child{
-    border-bottom: 0px;
-}
-
-tr td{
-    min-width: 76px; width: 31%; padding: 0px;
-}
-
-.quartile{
-    height: 100%; width: 100%;
-}
-
-.quartile tr{
-    min-height: 23px; height: 30%;
-}
-
-.quartile td{
-    min-width: 23px; width: 30%; background-color: #fffafa;
-}
-
-input{
-    height: 90%; width: 90%; border: 1px solid black
-}
-
-/*numpad*/
 
 #numpad{
-    min-height: 55px; height: 10%; width: 100%; background-color: pink;
-    display: flex; justify-content: center;
+    min-height: 100px;
 }
 
-#numpad table{
-    min-height: 55px; width: 100%;
+#text{
+    min-height: 100px; min-width: 300px;
 }
 
-#utility td{
-    text-align: center;
+/*tables*/
+
+#sudoku_table>table{
+    height: 300px; width: 300px; background-color: black;
 }
 
-#numpad table tr:first-child, #numpad table tr:nth-child(2),
-#numpad table tr:nth-child(3), #extra_space
+#sudoku_table>table tr{
+    height: 32%; width: 100%;
+}
+
+#sudoku_table>table tr td{
+    height: 33%; width: 33%; 
+}
+
+.ninetile{
+    height: 100%; width: 100%; 
+}
+
+.ninetile tr{
+    height: 32%; width: 100%; 
+}
+
+.ninetile tr td{
+    height: 33%; width: 33%;
+}
+
+.ninetile tr td input{
+    height: 90%; width: 90%; 
+}
+
+#numpad>table {
+    height: 100%; width: 100%; 
+}
+
+#numpad>table tr{
+    height: 25%; width: 100%;
+}
+
+#numpad>table tr td{
+    height: 25%; width: 32%; 
+}
+
+#numpad>table tr td button{
+    height: 100%; width: 100%;     
+}
+
+#numpad>table tr:nth-child(1) td, #numpad>table tr:nth-child(2) td, #numpad>table tr:nth-child(3) td
 {
     display: none;
 }
 
-#text{
-    min-height: 105px; min-width: 250px; height: 30%; width: 100%; background-color: blue;
-}
-
-/*------------Tablets--------------*/
+/*-Tablets-*/
 
 @media screen and (min-width: 600px){
-    
+
+    /*structure*/
+
+    main{
+        min-height: 700px; min-width: 600px;
+    }
+
     #top{
-        display: flex; flex-direction: column; 
+        min-height: 600px; min-width: 600px;
     }
 
-    #top #sudoku_table{
-        max-width: 300px; align-self: center;
-    }
-
-    #numpad{
-        height: 20%; margin-top: 10%; 
-    }
-
-    #utility td{
-        height: 100%; width: 50%;  
+    #sudoku_table{
+        min-height: 400px; display: flex; justify-content: center;
     }
     
-    #utility td button{
-        height: 100%; width: 50%; padding: 16px; 
+    #numpad{
+        min-height: 200px;
+    }    
+
+    #text{
+        min-height: 200px; min-width: 600px;
+    }
+
+    /*tables*/
+
+    #sudoku_table>table{
+        height: 500px; width: 500px; 
     }
 }
 
-/*@media screen and (min-width: 1000px){
-    body{
-        height: unset; width: unset;
-        display: flex; justify-content: center;
-    }
+/*-Desktops-*/
+
+@media screen and (min-width: 1000px){
+    
+    /*structure*/
 
     main{
-        height: 800px; width: 800px; background-color: grey; display: flex; flex-direction: column;
+        height: 600px; width: 800px; margin-top: unset;
     }
-}*/
+    
+    #top{
+        min-height: unset; min-width: unset; height: 400px; width: 800px;  
+        display: flex; flex-direction: row;
+    }
+
+    #sudoku_table{
+        display: unset; min-height: unset; height: 400px; width: 500px; 
+    }
+    
+    #numpad{
+        min-height: unset; height: 400px;  width: 300px;
+    }
+
+    #text{
+        min-height: 200px; min-width: 800px;
+    }
+
+    /*tables*/
+
+    #sudoku_table>table{
+        height: 400px; width: 500px; 
+    }
+
+    #numpad>table tr:nth-child(1) td, #numpad>table tr:nth-child(2) td, #numpad>table tr:nth-child(3) td
+    {
+        display: table-cell;
+    }
+}

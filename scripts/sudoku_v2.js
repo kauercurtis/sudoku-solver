@@ -1,17 +1,17 @@
 var current = 0;
 
 window.addEventListener("load", () => {
-/*--------------------------Square Initialization--------------------------*/    
-    const quartiles = document.getElementsByClassName("quartile");
+/*--------------------------Square Initialization for Input--------------------------*/    
+    const ninetiles = document.getElementsByClassName("ninetile");
 
-    let quartile_counter = 0;
+    let ninetile_counter = 0;
     let value_counter = 0;
     let current_Value = 0; 
     
-    while(quartile_counter < 9){
-        let squaresInQuartile = quartiles[quartile_counter].getElementsByTagName("td");
+    while(ninetile_counter < 9){
+        let squaresInNinetile = ninetiles[ninetile_counter].getElementsByTagName("td");
         while(value_counter < 9){
-            let currentTD = squaresInQuartile[value_counter];
+            let currentTD = squaresInNinetile[value_counter];
             let square = currentTD.getElementsByTagName("input")[0];
             square.addEventListener("click", () => {
                 current = Number(currentTD.getAttribute("id"));
@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
             value_counter++; 
         }
         value_counter = 0;
-        quartile_counter++;
+        ninetile_counter++;
     }
     
 
@@ -28,12 +28,11 @@ window.addEventListener("load", () => {
     let numpadRows = numPad.getElementsByTagName("tr");
     let rowCounter = 0;
     let buttonCounter = 0;
- //first implement the number buttons
+
+ //initialize and implement the number buttons
     while(rowCounter < 3){
         let buttonRow = numpadRows[rowCounter].getElementsByTagName("button");
         while(buttonCounter < 3){
-            console.log(buttonCounter);
-            console.log(buttonRow[buttonCounter].innerHTML);
             let button = buttonRow[buttonCounter];
             button.addEventListener("click", () => {
               let square = document.getElementById(current).getElementsByTagName("input");
@@ -49,7 +48,12 @@ window.addEventListener("load", () => {
     submit.addEventListener("click", () => {
         console.log("Data being submitted");
         let sudoku = [82];
-        initializeSudoku(sudoku);
+        
+        if(initializeSudoku(sudoku) === true){
+
+            return;
+
+        }
         solve(sudoku);
     });
 
@@ -60,7 +64,7 @@ window.addEventListener("load", () => {
     let counter = 1;
     let squareValueId;
     let currentSquare;
-
+    
     for(let counter = 1; counter <= 81; counter++){
         squareValueId = "square" + counter;
         currentSquare = document.getElementById(squareValueId);
@@ -74,22 +78,39 @@ window.addEventListener("load", () => {
 function initializeSudoku(sudoku){
     let squareValueId;
     let currentSquare;
-
-    for(let counter = 1; counter <= 81; counter++){
+    let counter = 1;
+    let contradiction = false;
+    
+    while(counter <= 81 && contradiction != true){
         squareValueId = "square" + counter;
         currentSquare = document.getElementById(squareValueId);
         if(currentSquare.value.length === 0){
             sudoku[counter] = 0;
         }
+        else if(Number(currentSquare.value) === NaN){
+            alert("Only integer numbers between 1 and 9 can be accepted as input!");
+            contradiction = true;
+        }
+        else if(Number(currentSquare.value) > 9 || Number(currentSquare.value) < 1 || Number.isInteger(Number(currentSquare.value)) === false){
+
+            alert("Given values cannot be less than 1 nor greater than 9 and must be integers!");
+            contradiction = true;
+        }
+        else if(findContradiction(counter, sudoku, Number(currentSquare.value))){
+            alert("Only one copy of a digit between 1 and 9 can be allowed in a given row, column, or ninetile!");
+            contradiction = true;
+        }
         else{
             sudoku[counter] = Number(currentSquare.value) + 10; 
         }
+        counter++;
     }
+    return contradiction;
 }
 
 function outputSudokuConsole(sudoku){
     for(let counter = 1; counter <= 81; counter++){
-        console.log(convertConstant(sudoku[counter]));
+        console.log(convertConstantValue(sudoku[counter]));
     }   
 }
 
@@ -107,6 +128,7 @@ function checkRowContradiction(index, sudoku, value){
     let row = getRow(index);
     let startingIndex = 1 + (9 * (row - 1));
     let counter = 1;
+    
     while(counter <= 9){
         if(convertConstantValue(sudoku[startingIndex]) == value){
             return true;
@@ -131,7 +153,9 @@ function getColumn(index){
     if(index % 9 === 0){
         return 9;
     }
+    
     let counter = 1;
+    
     while((index + counter) % 9 != 0){
         counter++;
     }
@@ -141,20 +165,21 @@ function getColumn(index){
 //checks the column containing the index for any contradictions with the value
 function checkColumnContradiction(index, sudoku, value){
     //every column starts with the # of column    
-        let startingIndex = getColumn(index);
+    let startingIndex = getColumn(index);
     //every column ends with its starting index + 72 because after 72 is the last row    
-        let endingIndex = startingIndex + 72;
-        while(startingIndex <= endingIndex){
-            if(convertConstantValue(sudoku[startingIndex]) === value){
-                return true;
-            }
-            startingIndex += 9;
+    let endingIndex = startingIndex + 72;
+        
+    while(startingIndex <= endingIndex){
+        if(convertConstantValue(sudoku[startingIndex]) === value){
+            return true;
         }
+        startingIndex += 9;
+    }
         return false; 
     }
 
-//returns the starting column for a given column's quartile
-function getQuartileStartingColumn(column){
+//returns the starting column for a given column's ninetile
+function getNinetileStartingColumn(column){
     if(column <= 3){
         return 1;
     }
@@ -166,8 +191,8 @@ function getQuartileStartingColumn(column){
     }
 }
 
-//returns the starting row of the quartile
-function getQuartileStartingRow(row){
+//returns the starting row of the ninetile
+function getNinetileStartingRow(row){
     if(row <= 3){
         return 1;
     }
@@ -179,41 +204,39 @@ function getQuartileStartingRow(row){
     }
 }
 
-//returns an array of numbers of all values in the quartile
+//returns an array of numbers of all values in the ninetile
 //array starts tradtionally from 0
-function getQuartile(index, sudoku){
+function getNinetile(index, sudoku){
     let row = getRow(index);
     let column = getColumn(index);
-    let startingRow = getQuartileStartingRow(row);
-    let startingColumn = getQuartileStartingColumn(column);
+    let startingRow = getNinetileStartingRow(row);
+    let startingColumn = getNinetileStartingColumn(column);
     let startingIndex = startingColumn + (9 * (startingRow - 1));
-    let quartile = [9];
-
+    let ninetile = [9];
+    
     for(let counter = 0; counter <= 2; counter++){
-        quartile[counter] = sudoku[startingIndex + counter];
+        ninetile[counter] = sudoku[startingIndex + counter];
     }
     
     startingIndex += 9;
-
     for(let counter = 3; counter <= 5; counter++){
-        quartile[counter] = sudoku[startingIndex + (counter - 3)];
+        ninetile[counter] = sudoku[startingIndex + (counter - 3)];
     }
-
+    
     startingIndex += 9;
-
     for(let counter = 6; counter <= 8; counter++){
-        quartile[counter] = sudoku[startingIndex + (counter - 6)];
+        ninetile[counter] = sudoku[startingIndex + (counter - 6)];
     }
-
-    return quartile;
+    return ninetile;
 }
 
-//looks for a contradiction given a value in the quartile of an index
-function checkQuartileContradiction(index, sudoku, value){
-    let quartile = Array.from(getQuartile(index, sudoku));
+//looks for a contradiction given a value in the ninetile of an index
+function checkNinetileContradiction(index, sudoku, value){
+    let ninetile = Array.from(getNinetile(index, sudoku));
     let counter = 0;
+    
     while(counter <= 8){
-        if(convertConstantValue(quartile[counter]) === value){
+        if(convertConstantValue(ninetile[counter]) === value){
             return true;
         }
         counter++;
@@ -222,7 +245,7 @@ function checkQuartileContradiction(index, sudoku, value){
 }
 
 function findContradiction(index, sudoku, value){
-    if(checkQuartileContradiction(index, sudoku, value)){
+    if(checkNinetileContradiction(index, sudoku, value)){
         return true;
     }
     else if(checkRowContradiction(index, sudoku, value)){
@@ -259,7 +282,6 @@ function traverseDown(index, sudoku){
     do{
         ++index;
     }while(index <= 81 && sudoku[index] > 9);
-
     return index;
 }
 
@@ -274,7 +296,7 @@ function traversalDirector(index, sudoku, value){
     if(index > 81){
         return index;
     }
-
+    
     while(value < 10){
         if(findContradiction(index, sudoku, value) === true){
             ++value;
@@ -288,32 +310,26 @@ function traversalDirector(index, sudoku, value){
 //this conditional makes sure the value at an index returned is not greater than 9
     if(value > 9){
         sudoku[index] = 0;
-        /*let nextIndex = backTrack(index, sudoku);*/
-        /* traversalDirector(nextIndex, sudoku, sudoku[nextIndex] + 1); */
         return backTrack(index, sudoku);
     }
     else{
-        /*let nextIndex = traverseDown(index, sudoku);
-        traversalDirector(nextIndex, sudoku, 1);*/
         return traverseDown(index, sudoku);
     }
 }
 
 function solve(sudoku){
     let startingIndex = traverseDown(0, sudoku);
-
-    while(startingIndex <= 81){
-
-        startingIndex = traversalDirector(startingIndex, sudoku, sudoku[startingIndex] + 1);
     
+    while(startingIndex <= 81){
+        startingIndex = traversalDirector(startingIndex, sudoku, sudoku[startingIndex] + 1);
     }
-
     outputUI(sudoku);
 }
 
 function outputUI(sudoku){
     let currentSquare;
     let counter = 1;
+    
     while(counter <= 81){
         currentSquare = document.getElementById("square" + counter);
         currentSquare.value = convertConstantValue(sudoku[counter]);
