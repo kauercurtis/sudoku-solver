@@ -9,9 +9,13 @@ Alot of Sudoku websites allow players to make 3 mistakes and then play an ad unt
 # Naming Schema - A brief rundown on certain vocabulary used and their meanings
 
 Row: A row in a sudoku puzzle (there are a total of 9 of these).
+
 Column: A column in a sudoku puzzle (there are a total of 9 of these).
+
 ninetile: A 3x3 area in a sudoku puzzle (there are a total of 9 of these).  
+
 Contradiction: Something that doesn't follow the rules of a sudoku puzzle.
+
 constantValue: A given Value from the sudoku puzzle. During algorithmic runtime, represented as constantValue + 10. 
 
 # Development Updates
