@@ -17,14 +17,3 @@ ninetile: A 3x3 area in a sudoku puzzle (there are a total of 9 of these).
 Contradiction: Something that doesn't follow the rules of a sudoku puzzle.
 
 constantValue: A given Value from the sudoku puzzle. During algorithmic runtime, represented as constantValue + 10. 
-
-# Development Updates
-
--8/5/2023-
-Input and output of data is implemented and works. Algorithm and helper functions are implemented and works. Algorithm successfully solves Sudoku problems. 
-
--8/16/2023
-Added and implemented rest of keypad buttons with Functionality. Created and applied a coherent/responsive styling. Changed constant to constantValue in naming schema. Added a little dictionary for key definitions used throughout code. 
-
--9/5/2023
-Added appropriate instructions to id="text".
