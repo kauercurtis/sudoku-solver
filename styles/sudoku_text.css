@@ -1,0 +1,33 @@
+/*mobile*/
+
+#text>h2{
+
+    border-bottom: 2px solid black;
+
+}
+
+#text>p span{
+
+    display: none;
+
+}
+
+/*tablets*/
+
+/*desktop*/
+
+@media screen and (min-width: 1000px){
+
+    #text>p{
+
+        line-height: 1.8;
+
+    }
+
+    #text>p span{
+
+        display: inline;
+
+    }
+
+} 
