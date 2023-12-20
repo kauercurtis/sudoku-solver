@@ -3,10 +3,104 @@
 ***/
 
 /*
-CURRENT - binds with the last clicked on square by the user
-Functions that use it -  window.addEvenListener("load", () => {}) 
+    CURRENT_SQUARE - binds with the last clicked on square by the user
+    Functions that use it -  window.addEvenListener("load", () => {}) 
 */
-var CURRENT = 0;
+var CURRENT_SQUARE = 0;
+
+/*
+    window.addEventListener("load", () => {}) - Adds event listeners to each of the squares and buttons
+    Functions that use it - none
+*/
+window.addEventListener("load", () => {    
+    const subtiles = document.getElementsByClassName("subtile");
+    let subtile_counter = 0;
+    let value_counter = 0;
+    
+    while(subtile_counter < 9){
+        let squaresInSubtile = subtiles[subtile_counter].getElementsByTagName("td");
+        
+        while(value_counter < 9){
+            let currentTD = squaresInSubtile[value_counter];
+            let square = currentTD.getElementsByTagName("input")[0];
+            
+            square.addEventListener("click", () => {
+                let ID = currentTD.getAttribute("id");
+                CURRENT_SQUARE = Number(ID);
+            })
+            
+            value_counter++; 
+        }
+
+        value_counter = 0;
+        subtile_counter++;
+    }
+    
+    let numPad = document.getElementById("numpad");
+    let numpadRows = numPad.getElementsByTagName("tr");
+    let rowCounter = 0;
+    let buttonCounter = 0;
+
+    while(rowCounter < 3){
+        let buttonRow = numpadRows[rowCounter].getElementsByTagName("button");
+        
+        while(buttonCounter < 3){
+            let button = buttonRow[buttonCounter];
+            button.addEventListener("click", () => {
+                let squareID = document.getElementById(CURRENT_SQUARE);
+                let square = squareID.getElementsByTagName("input");
+                square[0].value = button.innerHTML;
+            });
+            buttonCounter++;
+        }
+        
+        buttonCounter = 0;
+        rowCounter++;
+    }
+
+    let sudoku = [82];
+    let currentUtility = document.getElementById("_submit");
+
+    currentUtility.addEventListener("click", (sudoku) => {
+        submit(sudoku);
+    });
+
+    currentUtility = document.getElementById("_hint");
+
+    currentUtility.addEventListener("click", (sudoku) => {
+        hint(sudoku);
+    });
+
+    currentUtility = document.getElementById("_clear");
+    
+    currentUtility.addEventListener("click", () => {
+        CURRENT = 0;
+        let squareValueId;
+        let currentSquare;
+    
+        for(let counter = 1; counter <= 81; counter++){
+            squareValueId = "square" + counter;
+            currentSquare = document.getElementById(squareValueId);
+            currentSquare.value = "";
+        }
+    });
+});
+
+/*
+submit - outputs the values of the solved sudoku
+arg1 - sudoku - the array representation of a sudoku
+return - nothing
+Checks if the sudoku has already been solved and can be initialized successfully. If both are false, makes a call to solve().
+*/
+function submit(sudoku){
+    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === false){
+        solve(sudoku);
+        outputUI(sudoku); 
+    }
+    else if(checkSolved(sudoku) === true){
+        outputUI(sudoku);
+    }    
+}
 
 /*
 traverseDown - traverses an array representation of a sudoku for the next non constant value
@@ -458,117 +552,6 @@ function hint(sudoku){
     
     outputHint(sudoku);
 }
-
-/*
-submit - outputs the values of the solved sudoku
-param1 - sudoku - the array representation of a sudoku
-return - nothing
-Checks if the sudoku has already been solved and can be initialized successfully. If both are false, makes a call to solve().
-*/
-function submit(sudoku){
-
-    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === false){
-
-        solve(sudoku);
-        outputUI(sudoku); 
-
-    }
-    else if(checkSolved(sudoku) === true){
-
-        outputUI(sudoku);
-
-    }    
-
-}
-
-/*
-window.addEventListener("load", () => {}) - Adds event listeners to each of the squares and buttons
-Functions that use it - none
-*/
-window.addEventListener("load", () => {
-
-    //Add event listeners to each square for input    
-    const ninetiles = document.getElementsByClassName("ninetile");
-
-    let ninetile_counter = 0;
-    let value_counter = 0;
-    let current_Value = 0; 
-    
-    while(ninetile_counter < 9){
-        let squaresInNinetile = ninetiles[ninetile_counter].getElementsByTagName("td");
-        while(value_counter < 9){
-            let currentTD = squaresInNinetile[value_counter];
-            let square = currentTD.getElementsByTagName("input")[0];
-            square.addEventListener("click", () => {
-                CURRENT = Number(currentTD.getAttribute("id"));
-            })
-            value_counter++; 
-        }
-        value_counter = 0;
-        ninetile_counter++;
-    }
-    
-
-    //Add Event listeners to numPad buttons
-    let numPad = document.getElementById("numpad");
-    let numpadRows = numPad.getElementsByTagName("tr");
-    let rowCounter = 0;
-    let buttonCounter = 0;
-
-    while(rowCounter < 3){
-        let buttonRow = numpadRows[rowCounter].getElementsByTagName("button");
-        while(buttonCounter < 3){
-            let button = buttonRow[buttonCounter];
-            button.addEventListener("click", () => {
-              let square = document.getElementById(CURRENT).getElementsByTagName("input");
-              square[0].value = button.innerHTML;
-            });
-            buttonCounter++;
-        }
-        buttonCounter = 0;
-        rowCounter++;
-    }
-
-    //Add event listener to Submit button
-    //sudoku[0] acts as the head (exclusive)
-    let sudoku = [82];
-    let element = document.getElementById("input");
-
-    element.addEventListener("click", (sudoku) => {
-
-        submit(sudoku);
-
-    });
-
-    //Add event Listener to Hint button
-    element = document.getElementById("_hint");
-
-    element.addEventListener("click", (sudoku) => {
-
-        hint(sudoku);
-
-    });
-
-    //Add event listener to Clear button
-    element = document.getElementById("clear");
-    element.addEventListener("click", () => {
-    
-        console.log("clearing all inputted values");
-    
-        CURRENT = 0;
-        let counter = 1;
-        let squareValueId;
-        let currentSquare;
-    
-        for(let counter = 1; counter <= 81; counter++){
-            squareValueId = "square" + counter;
-            currentSquare = document.getElementById(squareValueId);
-            currentSquare.value = "";
-        }
-    
-    });
-
-});
 
 function outputSudokuConsole(sudoku){
     for(let counter = 1; counter <= 81; counter++){

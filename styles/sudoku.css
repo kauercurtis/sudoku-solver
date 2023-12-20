@@ -37,19 +37,19 @@ main{
     height: 33%; width: 33%; 
 }
 
-.ninetile{
+.subtile{
     height: 100%; width: 100%; 
 }
 
-.ninetile tr{
+.subtile tr{
     height: 32%; width: 100%; 
 }
 
-.ninetile tr td{
+.subtile tr td{
     height: 33%; width: 33%;
 }
 
-.ninetile tr td input{
+.subtile tr td input{
     height: 90%; width: 90%; 
 }
 
