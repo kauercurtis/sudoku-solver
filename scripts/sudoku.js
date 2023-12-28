@@ -93,19 +93,155 @@ return - nothing
 Checks if the sudoku has already been solved and can be initialized successfully. If both are false, makes a call to solve().
 */
 function submit(sudoku){
-    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === false){
+    let isSolved = checkSolved(sudoku);
+    
+    if(!isSolved && initializeSudoku(sudoku)){
         solve(sudoku);
         outputUI(sudoku); 
     }
-    else if(checkSolved(sudoku) === true){
+    else if(isSolved){
         outputUI(sudoku);
     }    
 }
 
 /*
+checkSolved - checks if the sudoku puzzle has been solved
+arg1 - sudoku - the array representation of a sudoku
+return - bool - returns false if sudoku has not been solved and true if it has been
+traverses the array from both ends at once. If undefined is found in either half, returns false
+functions that use it - hint(), submit(), outputHint()
+*/
+function checkSolved(sudoku){
+    let currentIndex = 1;
+    let isSolved = false;
+    
+    while(sudoku[currentIndex] != undefined && sudoku[81 - currentIndex] != undefined && currentIndex < Math.ceil(81 / 2)){
+        ++currentIndex;
+    }
+    
+    isSolved = sudoku[currentIndex] === undefined || sudoku[81 - currentIndex] === undefined ? false : true;
+    return isSolved;
+}
+
+/*
+initializeSudoku - collects user input in the squares and fills an array representation
+arg1 - sudoku - the sudoku to initialize
+return - bool - returns true if successful otherwise false
+If the user input falls out of sudoku rules, an alert is given and further execution is canceled
+Functions that use it - hint(), submit()
+*/
+function initializeSudoku(sudoku){
+    let squareValueId;
+    let currentSquare;
+    let currentIndex = 1;
+    let isSuccessful = true;
+    
+    while(currentIndex <= 81 && isSuccessful != false){
+        squareValueId = "square" + currentIndex;
+        currentSquare = document.getElementById(squareValueId);
+        if(currentSquare.value.length === 0){
+            sudoku[currentIndex] = 0;
+        }
+        else if(Number(currentSquare.value) === NaN){
+            alert("Only integer numbers between 1 and 9 can be accepted as input!");
+            isSuccessful = false;
+        }
+        else if(Number(currentSquare.value) > 9 || Number(currentSquare.value) < 1 || Number.isInteger(Number(currentSquare.value)) === false){
+            alert("Given values cannot be less than 1 nor greater than 9 and must be integers!");
+            isSuccessful = false;
+        }
+        else if(findContradiction(currentIndex, sudoku, Number(currentSquare.value))){
+            alert("Only one copy of a digit between 1 and 9 can be allowed in a given row, column, or subtile!");
+            isSuccessful = false;
+        }
+        else{
+            sudoku[currentIndex] = Number(currentSquare.value) + 10; 
+        }
+        currentIndex++;
+    }
+    return isSuccessful;
+}
+
+/*
+solve - driving function for traversalDirector()
+arg1 - sudoku - array repesentation of sudoku
+return - nothing
+Continues function calls to traversalDirector until the index returned is greater than 81.
+funtions that use it - hint(), submit()
+*/
+function solve(sudoku){
+    let startingIndex = traverseDown(0, sudoku);
+    
+    while(startingIndex <= 81){
+        startingIndex = traversalDirector(startingIndex, sudoku, sudoku[startingIndex] + 1);
+    }
+}
+
+/*
+outputUI - outputs the contents of an array repesentation of sudoku to the Document Object Model
+arg1 - sudoku - the array representation of a sudoku
+return - nothing
+functions that use it - submit()
+*/
+function outputUI(sudoku){
+    let currentSquare;
+    let index = 1;
+    
+    while(index <= 81){
+        currentSquare = document.getElementById("square" + index);
+        currentSquare.value = convertConstantValue(sudoku[index]);
+        index++;
+    }
+}
+
+/*
+findContradiction - Wrapper function for all individual checkContradiction functions
+arg1 - the current index of the sudoku
+arg2 - the array representation of the sudoku
+arg3 - the value that is being attempted to be put at the index position
+return - bool - returns true if any contradiction is found and false if no contradiction is found
+functions that use it - initializeSudoku(), hint(), submit(), traversalDirector()
+*/
+function findContradiction(index, sudoku, value){
+    if(checkSubtileContradiction(index, sudoku, value)){
+        return true;
+    }
+    else if(checkRowContradiction(index, sudoku, value)){
+        return true;
+    }
+    else if(checkColumnContradiction(index, sudoku, value)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+/*
+checkSubtileContradiction - checks a ninetile (3 X 3 area of a sudoku) for a contradiction
+arg1 - index - current index position of the array repesentation of the sudoku
+arg2 - sudoku - the array representation of the sudoku
+arg3 - value - the current value being attempted to be put at the index position
+return - bool - returns true if a contradiction is found and false if not
+functions that use it - findContradiction()
+*/
+function checkSubtileContradiction(sudokuIndex, sudoku, value){
+    let subtile = Array.from(getNinetile(sudokuIndex, sudoku));
+    let subtileIndex = 0;
+    
+    while(subtileIndex <= 8){
+        if(convertConstantValue(subtile[subtileIndex]) === value){
+            return true;
+        }
+        subtileIndex++;
+    }
+    return false;
+}
+
+/*
 traverseDown - traverses an array representation of a sudoku for the next non constant value
-param1 - index - the index to start traversal from (exclusive)
-param2 - sudoku - the array representation of a sudoku
+arg1 - index - the index to start traversal from (exclusive)
+arg2 - sudoku - the array representation of a sudoku
 return - int - the index position of the next non constant value
 functions that use it - traversalDirector()
 */
@@ -166,31 +302,6 @@ function convertConstantValue(value){
         return value;
     }
     return value - 10;
-}
-
-/*
-checkSolved - checks if the sudoku puzzle has been solved
-param1 - sudoku - the array representation of a sudoku
-return - bool - returns false if sudoku has not been solved and true if it has been
-traverses the array from both ends at once. If undefined is found in either half, returns false
-functions that use it - hint(), submit(), outputHint()
-*/
-function checkSolved(sudoku){
-
-    //index position 0 is head sentinel in Array representation
-    let currentIndex = 1;
-
-    while(sudoku[currentIndex] != undefined && sudoku[81 - currentIndex] != undefined && currentIndex < Math.ceil(81 / 2)){
-
-        ++currentIndex;
-
-    }
-    if(sudoku[currentIndex] === undefined || sudoku[81 - currentIndex] === undefined){
-        return false;
-    }
-    else{
-        return true;
-    }
 }
 
 /*
@@ -342,90 +453,6 @@ function getNinetile(index, sudoku){
 }
 
 /*
-checkNinetileContradiction - checks a ninetile (3 X 3 area of a sudoku) for a contradiction
-param1 - index - current index position of the array repesentation of the sudoku
-param2 - sudoku - the array representation of the sudoku
-param3 - value - the current value being attempted to be put at the index position
-return - bool - returns true if a contradiction is found and false if not
-functions that use it - findContradiction()
-*/
-function checkNinetileContradiction(index, sudoku, value){
-    let ninetile = Array.from(getNinetile(index, sudoku));
-    let counter = 0;
-    
-    while(counter <= 8){
-        if(convertConstantValue(ninetile[counter]) === value){
-            return true;
-        }
-        counter++;
-    }
-    return false;
-}
-
-/*
-findContradiction - Wrapper function for all individual checkContradiction functions
-param1 - the current index of the sudoku
-param2 - the array representation of the sudoku
-param3 - the value that is being attempted to be put at the index position
-return - bool - returns true if any contradiction is found and false if no contradiction is found
-functions that use it - initializeSudoku(), hint(), submit(), traversalDirector()
-*/
-function findContradiction(index, sudoku, value){
-    if(checkNinetileContradiction(index, sudoku, value)){
-        return true;
-    }
-    else if(checkRowContradiction(index, sudoku, value)){
-        return true;
-    }
-    else if(checkColumnContradiction(index, sudoku, value)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-/*
-initializeSudoku - collects user input in the squares and fills an array representation
-param1 - sudoku - the sudoku to initialize
-return - bool - returns true if a contradiction is found and false otherwise
-If the user input falls out of sudoku rules, an alert is given and further execution is canceled
-Functions that use it - hint(), submit()
-*/
-function initializeSudoku(sudoku){
-    let squareValueId;
-    let currentSquare;
-    let counter = 1;
-    let contradiction = false;
-    
-    while(counter <= 81 && contradiction != true){
-        squareValueId = "square" + counter;
-        currentSquare = document.getElementById(squareValueId);
-        if(currentSquare.value.length === 0){
-            sudoku[counter] = 0;
-        }
-        else if(Number(currentSquare.value) === NaN){
-            alert("Only integer numbers between 1 and 9 can be accepted as input!");
-            contradiction = true;
-        }
-        else if(Number(currentSquare.value) > 9 || Number(currentSquare.value) < 1 || Number.isInteger(Number(currentSquare.value)) === false){
-
-            alert("Given values cannot be less than 1 nor greater than 9 and must be integers!");
-            contradiction = true;
-        }
-        else if(findContradiction(counter, sudoku, Number(currentSquare.value))){
-            alert("Only one copy of a digit between 1 and 9 can be allowed in a given row, column, or ninetile!");
-            contradiction = true;
-        }
-        else{
-            sudoku[counter] = Number(currentSquare.value) + 10; 
-        }
-        counter++;
-    }
-    return contradiction;
-}
-
-/*
 outputHint - outputs the next value in sequence to the first none valued square in UI 
 param1 - sudoku - the array representation of a sudoku
 return - nothing
@@ -494,38 +521,6 @@ function traversalDirector(index, sudoku, value){
 }
 
 /*
-solve - driving function for traversalDirector()
-param1 - sudoku - array repesentation of sudoku
-return - nothing
-Continues function calls to traversalDirector until the index returned is greater than 81.
-funtions that use it - hint(), submit()
-*/
-function solve(sudoku){
-    let startingIndex = traverseDown(0, sudoku);
-    
-    while(startingIndex <= 81){
-        startingIndex = traversalDirector(startingIndex, sudoku, sudoku[startingIndex] + 1);
-    }
-}
-
-/*
-outputUI - outputs the contents of an array repesentation of sudoku to the Document Object Model
-param1 - sudoku - the array representation of a sudoku
-return - nothing
-functions that use it - submit()
-*/
-function outputUI(sudoku){
-    let currentSquare;
-    let counter = 1;
-    
-    while(counter <= 81){
-        currentSquare = document.getElementById("square" + counter);
-        currentSquare.value = convertConstantValue(sudoku[counter]);
-        counter++;
-    }
-}
-
-/*
 outputSudokuConsole - outputs the contents of an array representation of a sudoku to the console
 param1 - sudoku - the array representation of a sudoku
 return - nothing
@@ -545,8 +540,7 @@ Checks if the sudoku is already solved and if the sudoku can be initialized, if 
 functions that use it - window.addEventListener("load", () => {})
 */
 function hint(sudoku){
-
-    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === false){
+    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === true){
         solve(sudoku);
     }
     
