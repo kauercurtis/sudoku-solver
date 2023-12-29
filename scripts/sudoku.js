@@ -184,13 +184,13 @@ return - nothing
 functions that use it - submit()
 */
 function outputUI(sudoku){
-    let currentSquare;
-    let index = 1;
+    let currentSquare = undefined;
+    let sudokuIndex = 1;
     
-    while(index <= 81){
-        currentSquare = document.getElementById("square" + index);
-        currentSquare.value = convertConstantValue(sudoku[index]);
-        index++;
+    while(sudokuIndex <= 81){
+        currentSquare = document.getElementById("square" + sudokuIndex);
+        currentSquare.value = convertConstantValue(sudoku[sudokuIndex]);
+        sudokuIndex++;
     }
 }
 
@@ -202,14 +202,14 @@ arg3 - the value that is being attempted to be put at the index position
 return - bool - returns true if any contradiction is found and false if no contradiction is found
 functions that use it - initializeSudoku(), hint(), submit(), traversalDirector()
 */
-function findContradiction(index, sudoku, value){
-    if(checkSubtileContradiction(index, sudoku, value)){
+function findContradiction(sudokuIndex, sudoku, value){
+    if(checkSubtileContradiction(sudokuIndex, sudoku, value)){
         return true;
     }
-    else if(checkRowContradiction(index, sudoku, value)){
+    else if(checkRowContradiction(sudokuIndex, sudoku, value)){
         return true;
     }
-    else if(checkColumnContradiction(index, sudoku, value)){
+    else if(checkColumnContradiction(sudokuIndex, sudoku, value)){
         return true;
     }
     else{
@@ -226,7 +226,7 @@ return - bool - returns true if a contradiction is found and false if not
 functions that use it - findContradiction()
 */
 function checkSubtileContradiction(sudokuIndex, sudoku, value){
-    let subtile = Array.from(getNinetile(sudokuIndex, sudoku));
+    let subtile = Array.from(getSubtile(sudokuIndex, sudoku));
     let subtileIndex = 0;
     
     while(subtileIndex <= 8){
@@ -236,6 +236,83 @@ function checkSubtileContradiction(sudokuIndex, sudoku, value){
         subtileIndex++;
     }
     return false;
+}
+
+/*
+checkRowContradiction - checks for a contradiction in the index's row in a traditional sudoku 
+arg1 - sudokuIndex - the known index position of an array representation of a sudoku
+arg2 - sudoku - an array representation of a sudoku
+arg3 - value - the value attempted to insert at index position and to compare with other row values
+return - bool - returns true if contradiction is found and returns false if not
+Calculates the starting index of the row before traversing the row. Either 1, 10, 19, 28, 37, 46, 55, 64, 73
+functions that use it - findContradiction()
+*/
+function checkRowContradiction(sudokuIndex, sudoku, value){
+    let row = getRow(sudokuIndex);
+    let rowIndex = 1 + (9 * (row - 1));
+    let squareCounter = 1;
+    
+    while(squareCounter <= 9){
+        if(convertConstantValue(sudoku[rowIndex]) == value){
+            return true;
+        }
+        rowIndex++;
+        squareCounter += 1;
+    }
+    return false;
+}
+
+/*
+checkColumnContradiction - checks for a contradiction in the index's column with a value
+arg1 - sudokuIndex - the known index position in an array representation of a sudoku
+arg2 - sudoku - array representation of sudoku
+arg3 - value - the value to compare to the other values already in the column
+return - bool - returns true if a contradiction is found and false if not
+Calculates the endingIndex of a column by adding the starting index to 72. Column 1 = {1, 73}. Column 2 = {2, 74}. Column 3 = {3, 75}. Column 4 = {4, 76}. Column 5 = {5, 77}. Column 6 = {6, 78}. Column 7 = {7, 79}. Column 8 = {8, 80}. Column 9 = {9, 81}.
+functions that use it - findContradiction()
+*/
+function checkColumnContradiction(sudokuIndex, sudoku, value){    
+    let columnIndex = getColumn(sudokuIndex);    
+    let endingColumnIndex = columnIndex + 72;
+        
+    while(columnIndex <= endingColumnIndex){
+        if(convertConstantValue(sudoku[columnIndex]) === value){
+            return true;
+        }
+        columnIndex += 9;
+    }
+        return false; 
+}
+
+/*
+getSubtile - returns an Array of all the values in the ninetile (3 x 3 area of a sudoku) that the index position is in
+arg1 - sudokuIndex - the known index inside the subtile
+arg2 - sudoku - the array representation of a sudoku
+return - Array - returns an array containing the values of the ninetile
+functions that use it - checkNinetileContradiction()
+*/
+function getSubtile(sudokuIndex, sudoku){
+    let row = getRow(sudokuIndex);
+    let column = getColumn(sudokuIndex);
+    let startingRow = getNinetileStartingRow(row);
+    let startingColumn = getNinetileStartingColumn(column);
+    let startingSudokuIndex = startingColumn + (9 * (startingRow - 1));
+    let subtile = [9];
+    
+    for(let subtileIndex = 0; subtileIndex <= 2; subtileIndex++){
+        subtile[subtileIndex] = sudoku[startingSudokuIndex + subtileIndex];
+    }
+    
+    startingSudokuIndex += 9;
+    for(let subtileIndex = 3; subtileIndex <= 5; subtileIndex++){
+        subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 3)];
+    }
+    
+    startingSudokuIndex += 9;
+    for(let subtileIndex = 6; subtileIndex <= 8; subtileIndex++){
+        subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 6)];
+    }
+    return subtile;
 }
 
 /*
@@ -325,30 +402,6 @@ function getColumn(index){
 }
 
 /*
-checkColumnContradiction - checks for a contradiction in the index's column with a value
-param1 - index - the known index position in an array representation of a sudoku
-param2 - sudoku - array representation of sudoku
-param3 - value - the value to compare to the other values already in the column
-return - bool - returns true if a contradiction is found and false if not
-Calculates the endingIndex of a column by adding the starting index to 72. Column 1 = {1, 73}. Column 2 = {2, 74}. Column 3 = {3, 75}. Column 4 = {4, 76}. Column 5 = {5, 77}. Column 6 = {6, 78}. Column 7 = {7, 79}. Column 8 = {8, 80}. Column 9 = {9, 81}.
-functions that use it - findContradiction()
-*/
-function checkColumnContradiction(index, sudoku, value){
-    //every column starts with the # of column    
-    let startingIndex = getColumn(index);
-    //every column ends with its starting index + 72 because after 72 is the last row    
-    let endingIndex = startingIndex + 72;
-        
-    while(startingIndex <= endingIndex){
-        if(convertConstantValue(sudoku[startingIndex]) === value){
-            return true;
-        }
-        startingIndex += 9;
-    }
-        return false; 
-}
-
-/*
 getRow - returns the row that the index would belong to 
 param1 - index - the current index position in an array representation of a sudoku
 return - int - returns the row number the index would belong to in a traditional sudoku 
@@ -357,30 +410,6 @@ functions that use it - getNinetile(), checkRowContradiction()
 */
 function getRow(index){
     return Math.ceil(index / 9);
-}
-
-/*
-checkRowContradiction - checks for a contradiction in the index's row in a traditional sudoku 
-param1 - index - the known index position of an array representation of a sudoku
-param2 - sudoku - an array representation of a sudoku
-param3 - value - the value attempted to insert at index position and to compare with other row values
-return - bool - returns true if contradiction is found and returns false if not
-Calculates the starting index of the row before traversing the row. Either 1, 10, 19, 28, 37, 46, 55, 64, 73
-functions that use it - findContradiction()
-*/
-function checkRowContradiction(index, sudoku, value){
-    let row = getRow(index);
-    let startingIndex = 1 + (9 * (row - 1));
-    let counter = 1;
-    
-    while(counter <= 9){
-        if(convertConstantValue(sudoku[startingIndex]) == value){
-            return true;
-        }
-        startingIndex++;
-        counter += 1;
-    }
-    return false;
 }
 
 /*
@@ -419,37 +448,6 @@ function getNinetileStartingColumn(column){
     else{
         return 7;
     }
-}
-
-/*
-getNinetile - returns an Array of all the values in the ninetile (3 x 3 area of a sudoku) that the index position is in
-param1 - index - the known index inside the ninetile
-param2 - sudoku - the array representation of a sudoku
-return - Array - returns an array containing the values of the ninetile
-functions that use it - checkNinetileContradiction()
-*/
-function getNinetile(index, sudoku){
-    let row = getRow(index);
-    let column = getColumn(index);
-    let startingRow = getNinetileStartingRow(row);
-    let startingColumn = getNinetileStartingColumn(column);
-    let startingIndex = startingColumn + (9 * (startingRow - 1));
-    let ninetile = [9];
-    
-    for(let counter = 0; counter <= 2; counter++){
-        ninetile[counter] = sudoku[startingIndex + counter];
-    }
-    
-    startingIndex += 9;
-    for(let counter = 3; counter <= 5; counter++){
-        ninetile[counter] = sudoku[startingIndex + (counter - 3)];
-    }
-    
-    startingIndex += 9;
-    for(let counter = 6; counter <= 8; counter++){
-        ninetile[counter] = sudoku[startingIndex + (counter - 6)];
-    }
-    return ninetile;
 }
 
 /*
