@@ -285,34 +285,52 @@ function checkColumnContradiction(sudokuIndex, sudoku, value){
 }
 
 /*
-getSubtile - returns an Array of all the values in the ninetile (3 x 3 area of a sudoku) that the index position is in
+getSubtile - returns an Array of all the values in the subtile (3 x 3 area of a sudoku) that the index position is in
 arg1 - sudokuIndex - the known index inside the subtile
 arg2 - sudoku - the array representation of a sudoku
-return - Array - returns an array containing the values of the ninetile
-functions that use it - checkNinetileContradiction()
+return - Array - returns an array containing the values of the subtile
+functions that use it - checkSubtileContradiction()
 */
 function getSubtile(sudokuIndex, sudoku){
-    let row = getRow(sudokuIndex);
-    let column = getColumn(sudokuIndex);
-    let startingRow = getNinetileStartingRow(row);
-    let startingColumn = getNinetileStartingColumn(column);
-    let startingSudokuIndex = startingColumn + (9 * (startingRow - 1));
+    let row = getRow(sudokuIndex), column = getColumn(sudokuIndex);
+    let startingRow = get_subtile_starting_column_and_row(row);
+    let startingColumn = get_subtile_starting_column_and_row(column);
+    let startingSubtileIndex = startingColumn + (9 * (startingRow - 1));
     let subtile = [9];
     
     for(let subtileIndex = 0; subtileIndex <= 2; subtileIndex++){
         subtile[subtileIndex] = sudoku[startingSudokuIndex + subtileIndex];
     }
     
-    startingSudokuIndex += 9;
+    startingSubtileIndex += 9;
     for(let subtileIndex = 3; subtileIndex <= 5; subtileIndex++){
         subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 3)];
     }
     
-    startingSudokuIndex += 9;
+    startingSubtileIndex += 9;
     for(let subtileIndex = 6; subtileIndex <= 8; subtileIndex++){
         subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 6)];
     }
     return subtile;
+}
+
+/*
+get_subtile_starting_column_and_row - returns the first row or column of the subtile that the rowOrColumn belongs to
+arg1 - rowOrColumn - the known row or column number
+return - int - returns the top row or leftmost column of the subtile that the row or Column belongs to
+Rows 1, 2, 3 start with row 1 and column 1. Rows 4, 5, 6, start with row 4 and column 4. Rows 7, 8, 9, start with row 7 and column 7 
+functions that use it - getSubtile()
+*/
+function get_subtile_starting_column_and_row(rowOrColumn){
+    if(rowOrColumn <= 3){
+        return 1;
+    }
+    else if(rowOrColumn <= 6){
+        return 4;
+    }
+    else{
+        return 7;
+    }
 }
 
 /*
@@ -410,44 +428,6 @@ functions that use it - getNinetile(), checkRowContradiction()
 */
 function getRow(index){
     return Math.ceil(index / 9);
-}
-
-/*
-getNinetileStartingRow - returns the first row of the ninetile that the row belongs to
-param1 - row - the known row number
-return - int - returns the top row of the ninetile that the row belongs to
-Rows 1, 2, 3 start with row 1. Rows 4, 5, 6, start with row 4. Rows 7, 8, 9, start with row 7 
-functions that use it - getNinetile()
-*/
-function getNinetileStartingRow(row){
-    if(row <= 3){
-        return 1;
-    }
-    else if(row <= 6){
-        return 4;
-    }
-    else{
-        return 7;
-    }
-}
-
-/*
-getNinetileStartingColumn - returns the starting column of the ninetile that the column belongs to
-param1 - column - the known column number
-return - int - returns the leftmost column of the ninetile that the column belongs to
-Columns 1, 2, 3 start with column 1. Columns 4, 5, 6, start with column 4. Columns 7, 8, 9 start with column 7.
-functions that use it - getNinetile()
-*/
-function getNinetileStartingColumn(column){
-    if(column <= 3){
-        return 1;
-    }
-    else if(column <= 6){
-        return 4;
-    }
-    else{
-        return 7;
-    }
 }
 
 /*
