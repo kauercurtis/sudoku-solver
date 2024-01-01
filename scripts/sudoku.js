@@ -13,6 +13,12 @@ var CURRENT_SQUARE = 0;
     Functions that use it - none
 */
 window.addEventListener("load", () => {    
+    addEventListenersToSudokuGrid();
+    addEventListenersToNumberPad();
+    addEventListenersToUtility();
+});
+
+function addEventListenersToSudokuGrid(){
     const subtiles = document.getElementsByClassName("subtile");
     let subtile_counter = 0;
     let value_counter = 0;
@@ -35,7 +41,9 @@ window.addEventListener("load", () => {
         value_counter = 0;
         subtile_counter++;
     }
-    
+}
+
+function addEventListenersToNumberPad(){
     let numPad = document.getElementById("numpad");
     let numpadRows = numPad.getElementsByTagName("tr");
     let rowCounter = 0;
@@ -57,22 +65,22 @@ window.addEventListener("load", () => {
         buttonCounter = 0;
         rowCounter++;
     }
+}
 
+function addEventListenersToUtility(){
     let sudoku = [82];
+    
     let currentUtility = document.getElementById("_submit");
-
     currentUtility.addEventListener("click", (sudoku) => {
         submit(sudoku);
     });
 
     currentUtility = document.getElementById("_hint");
-
     currentUtility.addEventListener("click", (sudoku) => {
         hint(sudoku);
     });
 
     currentUtility = document.getElementById("_clear");
-    
     currentUtility.addEventListener("click", () => {
         CURRENT = 0;
         let squareValueId;
@@ -84,7 +92,7 @@ window.addEventListener("load", () => {
             currentSquare.value = "";
         }
     });
-});
+}
 
 /*
 submit - outputs the values of the solved sudoku
@@ -299,17 +307,17 @@ function getSubtile(sudokuIndex, sudoku){
     let subtile = [9];
     
     for(let subtileIndex = 0; subtileIndex <= 2; subtileIndex++){
-        subtile[subtileIndex] = sudoku[startingSudokuIndex + subtileIndex];
+        subtile[subtileIndex] = sudoku[startingSubtileIndex + subtileIndex];
     }
     
     startingSubtileIndex += 9;
     for(let subtileIndex = 3; subtileIndex <= 5; subtileIndex++){
-        subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 3)];
+        subtile[subtileIndex] = sudoku[startingSubtileIndex + (subtileIndex - 3)];
     }
     
     startingSubtileIndex += 9;
     for(let subtileIndex = 6; subtileIndex <= 8; subtileIndex++){
-        subtile[subtileIndex] = sudoku[startingSudokuIndex + (subtileIndex - 6)];
+        subtile[subtileIndex] = sudoku[startingSubtileIndex + (subtileIndex - 6)];
     }
     return subtile;
 }
