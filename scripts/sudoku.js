@@ -82,15 +82,7 @@ function addEventListenersToUtility(){
 
     currentUtility = document.getElementById("_clear");
     currentUtility.addEventListener("click", () => {
-        CURRENT = 0;
-        let squareValueId;
-        let currentSquare;
-    
-        for(let counter = 1; counter <= 81; counter++){
-            squareValueId = "square" + counter;
-            currentSquare = document.getElementById(squareValueId);
-            currentSquare.value = "";
-        }
+        clearSudokuGrid();
     });
 }
 
@@ -110,6 +102,33 @@ function submit(sudoku){
     else if(isSolved){
         outputUI(sudoku);
     }    
+}
+
+/*
+hint - driving function for a hint (the next value in sequence to be revealed to the user)
+arg1 - sudoku - the array representation of a sudoku
+return - nothing
+Checks if the sudoku is already solved and if the sudoku can be initialized, if both are false, makes a call to solve().
+functions that use it - window.addEventListener("load", () => {})
+*/
+function hint(sudoku){
+    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === true){
+        solve(sudoku);
+    }
+    
+    outputHint(sudoku);
+}
+
+function clearSudokuGrid(){
+    CURRENT_SQUARE = 0;
+    let squareValueId = null;
+    let currentSquare = null;
+
+    for(let counter = 1; counter <= 81; counter++){
+        squareValueId = "square" + counter;
+        currentSquare = document.getElementById(squareValueId);
+        currentSquare.value = "";
+    }
 }
 
 /*
@@ -516,21 +535,6 @@ function outputSudokuConsole(sudoku){
     for(let counter = 1; counter <= 81; counter++){
         console.log(convertConstantValue(sudoku[counter]));
     }   
-}
-
-/*
-hint - outputs a hint (the next value in sequence to be revealed to the user)
-param1 - sudoku - the array representation of a sudoku
-return - nothing
-Checks if the sudoku is already solved and if the sudoku can be initialized, if both are false, makes a call to solve().
-functions that use it - window.addEventListener("load", () => {})
-*/
-function hint(sudoku){
-    if(checkSolved(sudoku) === false && initializeSudoku(sudoku) === true){
-        solve(sudoku);
-    }
-    
-    outputHint(sudoku);
 }
 
 function outputSudokuConsole(sudoku){
