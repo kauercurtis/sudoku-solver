@@ -2,6 +2,8 @@
 
 A web sudoku solver
 
+This repository is now archived. 
+
 # Inspiration
 
 Alot of Sudoku websites allow players to make 3 mistakes and then play an ad until the player gets to play again. The hints given are sometimes non applicable to the current situation. And on top of that, after being stuck on a puzzle for an hour, sudoku websites don't give the player the answer when they throw in the towel. This project is a reflection of my last two CS courses, Web Development and Algorithms. 
